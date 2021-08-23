@@ -49,7 +49,9 @@ class Linkify extends React.Component<Props, {}> {
 
         const mentionsWithLinks = newMentionesList.concat(matches);
 
-        mentionsWithLinks.sort((prew, next) => prew.index - next.index);
+        if (mentionsWithLinks.length > 1) {
+          mentionsWithLinks.sort((prew, next) => prew.index - next.index);
+        }
 
         matches = mentionsWithLinks;
       }
