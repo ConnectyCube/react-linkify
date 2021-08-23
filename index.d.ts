@@ -17,6 +17,7 @@ export interface LinkifyProps {
   hrefDecorator?: (text: string) => string;
   matchDecorator?: (text: string) => Match[];
   textDecorator?: (text: string) => string;
+  isMentions?: boolean;
 }
 
 export default class Linkify extends React.Component<LinkifyProps, {}> {}
