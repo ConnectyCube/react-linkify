@@ -47,7 +47,12 @@ class Linkify extends React.Component<Props, {}> {
           };
         });
 
-        const mentionsWithLinks = newMentionesList.concat(matches);
+        let mentionsWithLinks;
+        if (matches) {
+          mentionsWithLinks = newMentionesList.concat(matches);
+        } else {
+          mentionsWithLinks = newMentionesList;
+        }
 
         if (mentionsWithLinks.length > 1) {
           mentionsWithLinks.sort((prew, next) => prew.index - next.index);
