@@ -14,6 +14,7 @@ type Props = {
   matchDecorator: (string) => Array<Object>,
   textDecorator: (string) => string,
   isMentions?: Boolean,
+  isDeepLink?: Boolean,
 };
 
 class Linkify extends React.Component<Props, {}> {
@@ -30,6 +31,35 @@ class Linkify extends React.Component<Props, {}> {
     }
 
     let matches = this.props.matchDecorator(string);
+
+    if (this.props.isDeepLink) {
+      const listOfDeepLinks = [...string.matchAll(/axchat:\/\/join\/\S+/gi)];
+
+      if (listOfDeepLinks.length) {
+        const newDeepLinksList = listOfDeepLinks.map((deepLink) => {
+          return {
+            index: deepLink.index,
+            lastIndex: deepLink.index + deepLink[0].length,
+            raw: deepLink[0],
+            schema: "deepLink",
+            text: deepLink[0],
+          };
+        });
+
+        let deepLinksWithLinks;
+        if (matches) {
+          deepLinksWithLinks = newDeepLinksList.concat(matches);
+        } else {
+          deepLinksWithLinks = newDeepLinksList;
+        }
+
+        if (deepLinksWithLinks.length > 1) {
+          deepLinksWithLinks.sort((prev, next) => prev.index - next.index);
+        }
+
+        matches = deepLinksWithLinks;
+      }
+    }
 
     if (this.props.isMentions) {
       const listOfMentionedUsers = [
